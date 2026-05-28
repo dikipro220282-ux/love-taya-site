@@ -158,27 +158,33 @@ canvas{
 
     z-index:10;
 
-    padding:22px 55px;
+    overflow:hidden;
 
     border:none;
 
-    border-radius:20px;
+    border-radius:18px;
 
-    background:#ff2e63;
+    background:rgba(255,46,99,0.15);
+
+    backdrop-filter:blur(10px);
 
     color:white;
 
-    font-size:28px;
-
     cursor:pointer;
 
-    box-shadow:0 0 35px #ff2e63;
+    box-shadow:
+        0 0 20px #ff2e63,
+        0 0 40px rgba(255,46,99,0.5);
 
-    transition:0.3s;
+    transition:0.35s;
 
     font-weight:bold;
 
     display:none;
+
+    letter-spacing:3px;
+
+    border:1px solid rgba(255,255,255,0.2);
 
 }
 
@@ -186,7 +192,53 @@ canvas{
 
     transform:translate(-50%,-50%) scale(1.08);
 
+    box-shadow:
+        0 0 30px #ff2e63,
+        0 0 70px rgba(255,46,99,0.8);
+
 }
+
+.glow{
+
+    position:absolute;
+
+    inset:-40px;
+
+    background:linear-gradient(
+        45deg,
+        transparent,
+        rgba(255,255,255,0.2),
+        transparent
+    );
+
+    animation:moveGlow 3s linear infinite;
+
+}
+
+@keyframes moveGlow{
+
+    0%{
+        transform:translateX(-100%);
+    }
+
+    100%{
+        transform:translateX(100%);
+    }
+
+}
+
+/* PC */
+
+@media (min-width:768px){
+
+    #btn{
+        font-size:24px;
+        padding:22px 55px;
+    }
+
+}
+
+/* MOBILE */
 
 @media (max-width:767px){
 
@@ -203,8 +255,8 @@ canvas{
     }
 
     #btn{
-        font-size:18px;
-        padding:18px 30px;
+        font-size:15px;
+        padding:18px 28px;
     }
 
 }
@@ -238,7 +290,11 @@ canvas{
 <!-- BUTTON -->
 
 <button id="btn">
-    PRESS BUTTON ❤️
+
+    <span class="glow"></span>
+
+    PRESS BUTTON KITTY ❤️
+
 </button>
 
 <!-- CANVAS -->
@@ -337,7 +393,6 @@ btn.addEventListener("click", () => {
 
     particles = [];
 
-    // меньше частиц = без лагов
     const total = window.innerWidth < 768 ? 170 : 260;
 
     for(let i = 0; i < total; i++){
@@ -373,7 +428,6 @@ function animate(){
 
     if(started){
 
-        // сердце по центру
         const scale =
             Math.min(canvas.width, canvas.height) / 42;
 
@@ -381,7 +435,8 @@ function animate(){
 
             p.angle += p.rotateSpeed;
 
-            // движение по кругу
+            /* движение слов */
+
             const orbitX =
                 Math.cos(p.angle) * 10;
 
@@ -416,7 +471,7 @@ function animate(){
 
         });
 
-        /* CENTER */
+        /* CENTER TEXT */
 
         ctx.textAlign = "center";
 
