@@ -95,7 +95,7 @@ canvas{
 
 <canvas id="canvas"></canvas>
 
-<!-- МУЗЫКА -->
+<!-- MUSIC -->
 <audio id="music" loop>
     <source src="/static/angel.mp3" type="audio/mpeg">
 </audio>
@@ -137,7 +137,6 @@ function heartShape(t){
 
 btn.addEventListener("click", () => {
 
-    // музыка
     const music = document.getElementById("music");
 
     music.volume = 0.7;
@@ -152,8 +151,8 @@ btn.addEventListener("click", () => {
 
     particles = [];
 
-    // LOVE дальше друг от друга
-    const total = window.innerWidth < 768 ? 170 : 230;
+    // БОЛЬШЕ LOVE
+    const total = window.innerWidth < 768 ? 240 : 340;
 
     for(let i = 0; i < total; i++){
 
@@ -190,9 +189,9 @@ function animate(){
 
     if(started){
 
-        // БОЛЬШОЕ сердце
+        // БОЛЬШЕ и ШИРЕ сердце
         const scale =
-            Math.min(canvas.width, canvas.height) / 42;
+            Math.min(canvas.width, canvas.height) / 39;
 
         particles.forEach(p => {
 
@@ -209,20 +208,20 @@ function animate(){
             p.x += (targetX - p.x) * p.speed;
             p.y += (targetY - p.y) * p.speed;
 
-            // LOVE двигаются
-            const offsetX = Math.cos(p.angle) * 7;
-            const offsetY = Math.sin(p.angle) * 7;
+            // движение LOVE
+            const offsetX = Math.cos(p.angle) * 8;
+            const offsetY = Math.sin(p.angle) * 8;
 
-            // LOVE размеры
+            // LOVE крупнее
             ctx.font =
                 window.innerWidth < 768
-                ? "12px Arial"
-                : "16px Arial";
+                ? "15px Arial"
+                : "20px Arial";
 
             ctx.fillStyle = "#ff4d88";
 
             ctx.shadowColor = "#ff4d88";
-            ctx.shadowBlur = 20;
+            ctx.shadowBlur = 22;
 
             ctx.fillText(
                 "LOVE",
@@ -232,18 +231,18 @@ function animate(){
 
         });
 
-        // Текст в центре
+        // Tayusha
         ctx.textAlign = "center";
 
         ctx.font =
             window.innerWidth < 768
-            ? "bold 42px Arial"
-            : "bold 80px Arial";
+            ? "bold 48px Arial"
+            : "bold 85px Arial";
 
         ctx.fillStyle = "white";
 
         ctx.shadowColor = "#ff2e63";
-        ctx.shadowBlur = 40;
+        ctx.shadowBlur = 45;
 
         ctx.fillText(
             "Tayusha",
