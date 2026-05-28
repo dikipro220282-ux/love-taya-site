@@ -95,6 +95,11 @@ canvas{
 
 <canvas id="canvas"></canvas>
 
+<!-- МУЗЫКА -->
+<audio id="music" loop>
+    <source src="/static/angel.mp3" type="audio/mpeg">
+</audio>
+
 <script>
 
 const canvas = document.getElementById("canvas");
@@ -132,13 +137,23 @@ function heartShape(t){
 
 btn.addEventListener("click", () => {
 
+    // МУЗЫКА
+    const music = document.getElementById("music");
+
+    music.volume = 0.7;
+
+    // С какой секунды стартовать
+    music.currentTime = 0;
+
+    music.play();
+
     btn.style.display = "none";
 
     started = true;
 
     particles = [];
 
-    // меньше слов = больше расстояние
+    // количество LOVE
     const total = window.innerWidth < 768 ? 260 : 340;
 
     for(let i = 0; i < total; i++){
@@ -176,7 +191,7 @@ function animate(){
 
     if(started){
 
-        // сердце всегда помещается на экран
+        // сердце всегда по центру
         const scale =
             Math.min(canvas.width, canvas.height) / 55;
 
@@ -195,7 +210,7 @@ function animate(){
             p.x += (targetX - p.x) * p.speed;
             p.y += (targetY - p.y) * p.speed;
 
-            // движение по кругу
+            // движение LOVE
             const offsetX = Math.cos(p.angle) * 7;
             const offsetY = Math.sin(p.angle) * 7;
 
@@ -218,7 +233,7 @@ function animate(){
 
         });
 
-        // текст по центру
+        // Taya по центру
         ctx.textAlign = "center";
 
         ctx.font =
