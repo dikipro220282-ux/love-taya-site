@@ -107,27 +107,23 @@ btn.addEventListener("click", () => {
 
     particles = [];
 
-    for(let i = 0; i < 900; i++){
+    for(let i = 0; i < 420; i++){
 
-        const t = Math.random() * Math.PI * 2;
+        const t = (i / 420) * Math.PI * 2;
 
         const heart = heartShape(t);
 
         particles.push({
 
-            tx: canvas.width/2 + heart.x * 35,
-
-            ty: canvas.height/2 - heart.y * 35,
+            tx: heart.x,
+            ty: heart.y,
 
             x: Math.random() * canvas.width,
-
             y: Math.random() * canvas.height,
 
-            angle: Math.random() * Math.PI * 2,
+            speed: Math.random() * 0.03 + 0.01,
 
-            speed: Math.random() * 0.025 + 0.01,
-
-            rotateSpeed: Math.random() * 0.03
+            angle: Math.random() * Math.PI * 2
 
         });
 
@@ -137,22 +133,34 @@ btn.addEventListener("click", () => {
 
 function animate(){
 
-    ctx.fillStyle = "rgba(0,0,0,0.15)";
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    ctx.fillStyle = "black";
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
     if(started){
 
+        const scale = Math.min(canvas.width, canvas.height) / 45;
+
         particles.forEach(p => {
 
-            p.angle += p.rotateSpeed;
+            p.angle += 0.02;
 
-            p.x += (p.tx - p.x) * p.speed;
-            p.y += (p.ty - p.y) * p.speed;
+            const targetX =
+                canvas.width / 2 +
+                p.tx * scale;
 
-            const offsetX = Math.cos(p.angle) * 6;
-            const offsetY = Math.sin(p.angle) * 6;
+            const targetY =
+                canvas.height / 2 -
+                p.ty * scale;
 
-            ctx.font = "20px Arial";
+            p.x += (targetX - p.x) * p.speed;
+            p.y += (targetY - p.y) * p.speed;
+
+            const circleX = Math.cos(p.angle) * 10;
+            const circleY = Math.sin(p.angle) * 10;
+
+            ctx.font = "22px Arial";
 
             ctx.fillStyle = "#ff4d88";
 
@@ -161,22 +169,24 @@ function animate(){
 
             ctx.fillText(
                 "LOVE",
-                p.x + offsetX,
-                p.y + offsetY
+                p.x + circleX,
+                p.y + circleY
             );
 
         });
 
-        ctx.font = "bold 95px Arial";
+        ctx.font = "bold 90px Arial";
 
         ctx.fillStyle = "white";
 
         ctx.shadowColor = "#ff2e63";
         ctx.shadowBlur = 45;
 
+        ctx.textAlign = "center";
+
         ctx.fillText(
             "Taya",
-            canvas.width / 2 - 120,
+            canvas.width / 2,
             canvas.height / 2 + 25
         );
 
