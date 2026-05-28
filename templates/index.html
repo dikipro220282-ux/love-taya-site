@@ -19,11 +19,16 @@
 }
 
 html,body{
+
     width:100%;
     height:100%;
+
     overflow:hidden;
+
     background:black;
+
     font-family:Arial,sans-serif;
+
 }
 
 /* INTRO */
@@ -44,49 +49,93 @@ html,body{
 
     flex-direction:column;
 
-    color:#ff4d88;
-
     z-index:100;
 
 }
 
-#loadingText{
+/* HACKER TEXT */
 
-    font-size:22px;
+.topText{
 
-    text-shadow:0 0 15px #ff4d88;
+    font-size:24px;
 
-    letter-spacing:3px;
+    color:#ff4d88;
+
+    text-shadow:0 0 20px #ff4d88;
+
+    letter-spacing:5px;
+
+    margin-bottom:15px;
+
+    animation:flicker 1.5s infinite;
+
+    text-align:center;
 
 }
 
-#percent{
+.subText{
 
-    margin-top:20px;
-
-    font-size:55px;
-
-    font-weight:bold;
+    font-size:15px;
 
     color:white;
 
-    text-shadow:0 0 25px white;
+    letter-spacing:3px;
+
+    opacity:0.8;
+
+    text-shadow:0 0 12px white;
+
+    margin-bottom:35px;
+
+    text-align:center;
 
 }
+
+@keyframes flicker{
+
+    0%{
+        opacity:1;
+    }
+
+    50%{
+        opacity:0.6;
+    }
+
+    100%{
+        opacity:1;
+    }
+
+}
+
+/* PERCENT */
+
+#percent{
+
+    font-size:60px;
+
+    color:white;
+
+    font-weight:bold;
+
+    text-shadow:0 0 30px white;
+
+    margin-bottom:20px;
+
+}
+
+/* READY */
 
 #ready{
 
     display:none;
 
-    margin-top:35px;
+    color:#ff4d88;
 
-    color:white;
+    letter-spacing:5px;
 
-    font-size:20px;
+    text-shadow:0 0 20px #ff4d88;
 
-    letter-spacing:4px;
-
-    text-shadow:0 0 15px white;
+    animation:flicker 1.2s infinite;
 
 }
 
@@ -103,29 +152,72 @@ html,body{
 
     z-index:10;
 
+    overflow:hidden;
+
     border:none;
 
-    border-radius:20px;
+    border-radius:18px;
 
-    background:#ff2e63;
+    background:rgba(255,46,99,0.15);
+
+    backdrop-filter:blur(10px);
 
     color:white;
 
     cursor:pointer;
 
-    box-shadow:0 0 35px #ff2e63;
+    box-shadow:
+        0 0 20px #ff2e63,
+        0 0 40px rgba(255,46,99,0.5);
 
-    transition:0.3s;
+    transition:0.35s;
 
     font-weight:bold;
 
     display:none;
+
+    letter-spacing:3px;
+
+    border:1px solid rgba(255,255,255,0.2);
 
 }
 
 #btn:hover{
 
     transform:translate(-50%,-50%) scale(1.08);
+
+    box-shadow:
+        0 0 30px #ff2e63,
+        0 0 70px rgba(255,46,99,0.8);
+
+}
+
+.glow{
+
+    position:absolute;
+
+    inset:-40px;
+
+    background:linear-gradient(
+        45deg,
+        transparent,
+        rgba(255,255,255,0.2),
+        transparent
+    );
+
+    animation:moveGlow 3s linear infinite;
+
+}
+
+@keyframes moveGlow{
+
+    0%{
+        transform:translateX(-100%);
+    }
+
+    100%{
+        transform:translateX(100%);
+    }
 
 }
 
@@ -134,7 +226,7 @@ html,body{
 @media (min-width:768px){
 
     #btn{
-        font-size:30px;
+        font-size:24px;
         padding:22px 55px;
     }
 
@@ -144,8 +236,12 @@ html,body{
 
 @media (max-width:767px){
 
-    #loadingText{
+    .topText{
         font-size:16px;
+    }
+
+    .subText{
+        font-size:11px;
     }
 
     #percent{
@@ -153,8 +249,8 @@ html,body{
     }
 
     #btn{
-        font-size:20px;
-        padding:16px 30px;
+        font-size:15px;
+        padding:18px 28px;
     }
 
 }
@@ -179,8 +275,12 @@ canvas{
 
 <div id="intro">
 
-    <div id="loadingText">
-        INITIALIZING LOVE SYSTEM...
+    <div class="topText">
+        ACCESSING EMOTIONAL CORE...
+    </div>
+
+    <div class="subText">
+        TARGET DETECTED: TAYUSHA.exe
     </div>
 
     <div id="percent">
@@ -195,7 +295,13 @@ canvas{
 
 <!-- BUTTON -->
 
-<button id="btn">PRESS BUTTON ❤️</button>
+<button id="btn">
+
+    <span class="glow"></span>
+
+    START LOVE SEQUENCE
+
+</button>
 
 <!-- CANVAS -->
 
@@ -275,7 +381,7 @@ function heartShape(t){
 
 }
 
-/* BUTTON CLICK */
+/* BUTTON */
 
 btn.addEventListener("click", () => {
 
@@ -293,7 +399,6 @@ btn.addEventListener("click", () => {
 
     particles = [];
 
-    // больше слов
     const total = window.innerWidth < 768 ? 300 : 430;
 
     for(let i = 0; i < total; i++){
@@ -333,7 +438,6 @@ function animate(){
 
     if(started){
 
-        // большое сердце
         const scale =
             Math.min(canvas.width, canvas.height) / 39;
 
@@ -352,7 +456,7 @@ function animate(){
             p.x += (targetX - p.x) * p.speed;
             p.y += (targetY - p.y) * p.speed;
 
-            /* 3D EFFECT */
+            /* 3D */
 
             const depth =
                 Math.sin(Date.now() * 0.002 + p.angle) * 12;
@@ -363,7 +467,7 @@ function animate(){
             const offsetY =
                 Math.sin(p.angle) * depth;
 
-            /* TEXT SIZE */
+            /* SIZE */
 
             const size =
                 window.innerWidth < 768
