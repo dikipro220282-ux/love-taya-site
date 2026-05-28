@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
 >
 
-<title>Taya ❤️</title>
+<title>Tayusha ❤️</title>
 
 <style>
 
@@ -137,12 +137,11 @@ function heartShape(t){
 
 btn.addEventListener("click", () => {
 
-    // МУЗЫКА
+    // музыка
     const music = document.getElementById("music");
 
     music.volume = 0.7;
 
-    // С какой секунды стартовать
     music.currentTime = 0;
 
     music.play();
@@ -153,8 +152,8 @@ btn.addEventListener("click", () => {
 
     particles = [];
 
-    // количество LOVE
-    const total = window.innerWidth < 768 ? 260 : 340;
+    // LOVE дальше друг от друга
+    const total = window.innerWidth < 768 ? 170 : 230;
 
     for(let i = 0; i < total; i++){
 
@@ -191,9 +190,9 @@ function animate(){
 
     if(started){
 
-        // сердце всегда по центру
+        // БОЛЬШОЕ сердце
         const scale =
-            Math.min(canvas.width, canvas.height) / 55;
+            Math.min(canvas.width, canvas.height) / 42;
 
         particles.forEach(p => {
 
@@ -210,15 +209,15 @@ function animate(){
             p.x += (targetX - p.x) * p.speed;
             p.y += (targetY - p.y) * p.speed;
 
-            // движение LOVE
+            // LOVE двигаются
             const offsetX = Math.cos(p.angle) * 7;
             const offsetY = Math.sin(p.angle) * 7;
 
-            // размер LOVE
+            // LOVE размеры
             ctx.font =
                 window.innerWidth < 768
-                ? "13px Arial"
-                : "18px Arial";
+                ? "12px Arial"
+                : "16px Arial";
 
             ctx.fillStyle = "#ff4d88";
 
@@ -233,13 +232,13 @@ function animate(){
 
         });
 
-        // Taya по центру
+        // Текст в центре
         ctx.textAlign = "center";
 
         ctx.font =
             window.innerWidth < 768
-            ? "bold 48px Arial"
-            : "bold 85px Arial";
+            ? "bold 42px Arial"
+            : "bold 80px Arial";
 
         ctx.fillStyle = "white";
 
@@ -247,7 +246,7 @@ function animate(){
         ctx.shadowBlur = 40;
 
         ctx.fillText(
-            "Taya",
+            "Tayusha",
             canvas.width / 2,
             canvas.height / 2 + 18
         );
