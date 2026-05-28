@@ -31,6 +31,18 @@ html,body{
 
 }
 
+canvas{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+}
+
 /* INTRO */
 
 #intro{
@@ -52,8 +64,6 @@ html,body{
     z-index:100;
 
 }
-
-/* HACKER TEXT */
 
 .topText{
 
@@ -91,6 +101,34 @@ html,body{
 
 }
 
+#percent{
+
+    font-size:60px;
+
+    color:white;
+
+    font-weight:bold;
+
+    text-shadow:0 0 30px white;
+
+    margin-bottom:20px;
+
+}
+
+#ready{
+
+    display:none;
+
+    color:#ff4d88;
+
+    letter-spacing:5px;
+
+    text-shadow:0 0 20px #ff4d88;
+
+    animation:flicker 1.2s infinite;
+
+}
+
 @keyframes flicker{
 
     0%{
@@ -107,38 +145,6 @@ html,body{
 
 }
 
-/* PERCENT */
-
-#percent{
-
-    font-size:60px;
-
-    color:white;
-
-    font-weight:bold;
-
-    text-shadow:0 0 30px white;
-
-    margin-bottom:20px;
-
-}
-
-/* READY */
-
-#ready{
-
-    display:none;
-
-    color:#ff4d88;
-
-    letter-spacing:5px;
-
-    text-shadow:0 0 20px #ff4d88;
-
-    animation:flicker 1.2s infinite;
-
-}
-
 /* BUTTON */
 
 #btn{
@@ -152,33 +158,27 @@ html,body{
 
     z-index:10;
 
-    overflow:hidden;
+    padding:22px 55px;
 
     border:none;
 
-    border-radius:18px;
+    border-radius:20px;
 
-    background:rgba(255,46,99,0.15);
-
-    backdrop-filter:blur(10px);
+    background:#ff2e63;
 
     color:white;
 
+    font-size:28px;
+
     cursor:pointer;
 
-    box-shadow:
-        0 0 20px #ff2e63,
-        0 0 40px rgba(255,46,99,0.5);
+    box-shadow:0 0 35px #ff2e63;
 
-    transition:0.35s;
+    transition:0.3s;
 
     font-weight:bold;
 
     display:none;
-
-    letter-spacing:3px;
-
-    border:1px solid rgba(255,255,255,0.2);
 
 }
 
@@ -186,53 +186,7 @@ html,body{
 
     transform:translate(-50%,-50%) scale(1.08);
 
-    box-shadow:
-        0 0 30px #ff2e63,
-        0 0 70px rgba(255,46,99,0.8);
-
 }
-
-.glow{
-
-    position:absolute;
-
-    inset:-40px;
-
-    background:linear-gradient(
-        45deg,
-        transparent,
-        rgba(255,255,255,0.2),
-        transparent
-    );
-
-    animation:moveGlow 3s linear infinite;
-
-}
-
-@keyframes moveGlow{
-
-    0%{
-        transform:translateX(-100%);
-    }
-
-    100%{
-        transform:translateX(100%);
-    }
-
-}
-
-/* PC */
-
-@media (min-width:768px){
-
-    #btn{
-        font-size:24px;
-        padding:22px 55px;
-    }
-
-}
-
-/* MOBILE */
 
 @media (max-width:767px){
 
@@ -249,21 +203,9 @@ html,body{
     }
 
     #btn{
-        font-size:15px;
-        padding:18px 28px;
+        font-size:18px;
+        padding:18px 30px;
     }
-
-}
-
-canvas{
-
-    position:fixed;
-
-    top:0;
-    left:0;
-
-    width:100%;
-    height:100%;
 
 }
 
@@ -296,11 +238,7 @@ canvas{
 <!-- BUTTON -->
 
 <button id="btn">
-
-    <span class="glow"></span>
-
-    START LOVE SEQUENCE
-
+    PRESS BUTTON ❤️
 </button>
 
 <!-- CANVAS -->
@@ -346,7 +284,7 @@ const loading = setInterval(() => {
 
     }
 
-},40);
+},35);
 
 /* CANVAS */
 
@@ -399,7 +337,8 @@ btn.addEventListener("click", () => {
 
     particles = [];
 
-    const total = window.innerWidth < 768 ? 300 : 430;
+    // меньше частиц = без лагов
+    const total = window.innerWidth < 768 ? 170 : 260;
 
     for(let i = 0; i < total; i++){
 
@@ -409,17 +348,13 @@ btn.addEventListener("click", () => {
 
         particles.push({
 
-            tx: heart.x,
-            ty: heart.y,
-
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-
-            speed: Math.random() * 0.025 + 0.01,
+            baseX: heart.x,
+            baseY: heart.y,
 
             angle: Math.random() * Math.PI * 2,
 
-            rotate: Math.random() * 0.03
+            rotateSpeed:
+                Math.random() * 0.015 + 0.01
 
         });
 
@@ -438,58 +373,50 @@ function animate(){
 
     if(started){
 
+        // сердце по центру
         const scale =
-            Math.min(canvas.width, canvas.height) / 39;
+            Math.min(canvas.width, canvas.height) / 42;
 
         particles.forEach(p => {
 
-            p.angle += p.rotate;
+            p.angle += p.rotateSpeed;
 
-            const targetX =
+            // движение по кругу
+            const orbitX =
+                Math.cos(p.angle) * 10;
+
+            const orbitY =
+                Math.sin(p.angle) * 10;
+
+            const x =
                 canvas.width / 2 +
-                p.tx * scale;
+                p.baseX * scale +
+                orbitX;
 
-            const targetY =
+            const y =
                 canvas.height / 2 -
-                p.ty * scale;
+                p.baseY * scale +
+                orbitY;
 
-            p.x += (targetX - p.x) * p.speed;
-            p.y += (targetY - p.y) * p.speed;
-
-            /* 3D */
-
-            const depth =
-                Math.sin(Date.now() * 0.002 + p.angle) * 12;
-
-            const offsetX =
-                Math.cos(p.angle) * depth;
-
-            const offsetY =
-                Math.sin(p.angle) * depth;
-
-            /* SIZE */
-
-            const size =
+            ctx.font =
                 window.innerWidth < 768
-                ? 12 + depth * 0.2
-                : 16 + depth * 0.3;
-
-            ctx.font = size + "px Arial";
+                ? "13px Arial"
+                : "18px Arial";
 
             ctx.fillStyle = "#ff4d88";
 
             ctx.shadowColor = "#ff4d88";
-            ctx.shadowBlur = 22;
+            ctx.shadowBlur = 20;
 
             ctx.fillText(
                 "I LOVE U",
-                p.x + offsetX,
-                p.y + offsetY
+                x,
+                y
             );
 
         });
 
-        /* CENTER TEXT */
+        /* CENTER */
 
         ctx.textAlign = "center";
 
@@ -501,12 +428,12 @@ function animate(){
         ctx.fillStyle = "white";
 
         ctx.shadowColor = "#ff2e63";
-        ctx.shadowBlur = 45;
+        ctx.shadowBlur = 40;
 
         ctx.fillText(
             "Tayusha",
             canvas.width / 2,
-            canvas.height / 2 + 18
+            canvas.height / 2 + 20
         );
 
     }
