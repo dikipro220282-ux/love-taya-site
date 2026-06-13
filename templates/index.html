@@ -375,6 +375,53 @@ function heartShape(t){
 
 }
 
+const heartBounds = (() => {
+
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+
+    for(let i = 0; i < 720; i++){
+
+        const heart = heartShape((i / 720) * Math.PI * 2);
+
+        minX = Math.min(minX, heart.x);
+        maxX = Math.max(maxX, heart.x);
+        minY = Math.min(minY, heart.y);
+        maxY = Math.max(maxY, heart.y);
+
+    }
+
+    return {minX, maxX, minY, maxY};
+
+})();
+
+function fitCenterFont(text, maxWidth, maxHeight, startSize){
+
+    let fontSize = startSize;
+
+    while(fontSize > 18){
+
+        ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+
+        const metrics = ctx.measureText(text);
+        const textHeight =
+            metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent
+            || fontSize;
+
+        if(metrics.width <= maxWidth && textHeight <= maxHeight){
+            break;
+        }
+
+        fontSize -= 2;
+
+    }
+
+    return fontSize;
+
+}
+
 /* BUTTON */
 
 btn.addEventListener("click", () => {
@@ -431,6 +478,21 @@ function animate(){
         const scale =
             Math.min(canvas.width, canvas.height) / 42;
 
+        const heartWidth =
+            (heartBounds.maxX - heartBounds.minX) * scale;
+
+        const heartHeight =
+            (heartBounds.maxY - heartBounds.minY) * scale;
+
+        const heartCenterY =
+            canvas.height / 2 -
+            ((heartBounds.maxY + heartBounds.minY) / 2) * scale;
+
+        ctx.save();
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
         particles.forEach(p => {
 
             p.angle += p.rotateSpeed;
@@ -471,14 +533,28 @@ function animate(){
 
         });
 
+        ctx.restore();
+
         /* CENTER TEXT */
 
-        ctx.textAlign = "center";
+        const centerText = "Соня";
+        const maxTextWidth = heartWidth * 0.54;
+        const maxTextHeight = heartHeight * 0.26;
+        const startFontSize = Math.min(scale * 5.2, 96);
+        const fontSize =
+            fitCenterFont(
+                centerText,
+                maxTextWidth,
+                maxTextHeight,
+                startFontSize
+            );
 
-        ctx.font =
-            window.innerWidth < 768
-            ? "bold 48px Arial"
-            : "bold 90px Arial";
+        ctx.save();
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        ctx.font = `bold ${fontSize}px Arial, sans-serif`;
 
         ctx.fillStyle = "white";
 
@@ -486,10 +562,12 @@ function animate(){
         ctx.shadowBlur = 40;
 
         ctx.fillText(
-            "sonya ❤️",
+            centerText,
             canvas.width / 2,
-            canvas.height / 2 + 20
+            heartCenterY
         );
+
+        ctx.restore();
 
     }
 
